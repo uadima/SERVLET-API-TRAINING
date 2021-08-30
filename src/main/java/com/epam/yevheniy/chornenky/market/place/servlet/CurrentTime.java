@@ -1,4 +1,4 @@
-package com.epam.yevheniy.chornenky.marketPlace.serlets;
+package com.epam.yevheniy.chornenky.market.place.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -17,7 +17,7 @@ public class CurrentTime extends HttpServlet {
         ServletOutputStream outputStream = resp.getOutputStream();
         String formattedTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         String responseBody = "<html> <head> <meta> </head> <body>" + formattedTime + "</body> </html>";
-        outputStream.write(formattedTime.getBytes(StandardCharsets.UTF_8));
+        outputStream.write(responseBody.getBytes(StandardCharsets.UTF_8));
         outputStream.close();
     }
 }

@@ -11,8 +11,11 @@ public class PathFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String requestURI = request.getRequestURI();
-        if (!requestURI.startsWith("/static/") && !requestURI.startsWith("/action/")) {
-            request.getRequestDispatcher("/action/not-found").forward(request, response);
+        if (requestURI.equals("/")) {
+            request.getRequestDispatcher("action/home-page").forward(request, response);
+        }
+        else if (!requestURI.startsWith("/static/")) {
+            request.getRequestDispatcher("/action" + requestURI).forward(request, response);
         } else {
             super.doFilter(request, response, chain);
         }

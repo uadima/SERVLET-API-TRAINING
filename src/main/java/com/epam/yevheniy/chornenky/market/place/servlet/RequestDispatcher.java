@@ -1,8 +1,7 @@
 package com.epam.yevheniy.chornenky.market.place.servlet;
 
-import com.epam.yevheniy.chornenky.market.place.servlet.controllers.LoginPageController;
-import com.epam.yevheniy.chornenky.market.place.servlet.controllers.NotFoundPageController;
-import com.epam.yevheniy.chornenky.market.place.servlet.controllers.PageController;
+import com.epam.yevheniy.chornenky.market.place.ContextInitializer;
+import com.epam.yevheniy.chornenky.market.place.servlet.controllers.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,19 +12,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestDispatcher extends HttpServlet {
-    private static Map<String, PageController> pageControllers= new HashMap<>();
-    private static final PageController pageNotFoundController = new NotFoundPageController();
+    private ContextInitializer.Context context;
+    private Map<String, PageController> pageControllers= new HashMap<>();
 
-    static {
-        pageControllers.put("GET/action/login", new LoginPageController());
+    @Override
+    public void init() throws ServletException {
+        context = ContextInitializer.initializeContext();
+        this.pageControllers = context.getPageControllers();
     }
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String method = req.getMethod();
         String requestURI = req.getRequestURI();
         String key = method + requestURI;
-        PageController pageController = pageControllers.getOrDefault(key, pageNotFoundController);
+        PageController pageController = pageControllers.getOrDefault(key, context.getNotFoundPageController());
         pageController.handle(req, resp);
-
     }
 }

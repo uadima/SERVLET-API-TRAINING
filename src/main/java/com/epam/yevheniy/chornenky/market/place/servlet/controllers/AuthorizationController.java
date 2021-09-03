@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 public class AuthorizationController implements PageController{
@@ -39,8 +38,6 @@ public class AuthorizationController implements PageController{
             req.setAttribute("errorsMap", Map.of("email", e.getMessage()));
             req.getRequestDispatcher(JSP_PATH_TO_LOGIN_PAGE).forward(req, resp);
         }
-
-        System.out.printf("");
     }
 }
 

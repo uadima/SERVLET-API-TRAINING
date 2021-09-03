@@ -1,5 +1,7 @@
 package com.epam.yevheniy.chornenky.market.place;
 
+import com.epam.yevheniy.chornenky.market.place.repositories.InMemoryUserRepository;
+import com.epam.yevheniy.chornenky.market.place.repositories.MysqlUserRepository;
 import com.epam.yevheniy.chornenky.market.place.repositories.UserRepository;
 import com.epam.yevheniy.chornenky.market.place.services.UserService;
 import com.epam.yevheniy.chornenky.market.place.servlet.controllers.*;
@@ -26,7 +28,8 @@ public class ContextInitializer {
         private final Map<String, PageController> pageControllers;
 
         private Context() {
-            UserRepository userRepository = new UserRepository();
+            UserRepository userRepository = new MysqlUserRepository();
+
             UserService userService = new UserService(userRepository);
             authorizationController = new AuthorizationController(userService);
 

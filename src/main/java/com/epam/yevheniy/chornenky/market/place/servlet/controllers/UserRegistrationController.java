@@ -1,7 +1,5 @@
 package com.epam.yevheniy.chornenky.market.place.servlet.controllers;
 
-import com.epam.yevheniy.chornenky.market.place.repositories.entities.UserEntity;
-import com.epam.yevheniy.chornenky.market.place.repositories.UserRepository;
 import com.epam.yevheniy.chornenky.market.place.exceptions.ValidationException;
 import com.epam.yevheniy.chornenky.market.place.services.UserService;
 import com.epam.yevheniy.chornenky.market.place.servlet.controllers.validators.ValidatorRegistrar;

@@ -1,9 +1,9 @@
 package com.epam.yevheniy.chornenky.market.place.services;
 
+import com.epam.yevheniy.chornenky.market.place.exceptions.AuthenticationException;
 import com.epam.yevheniy.chornenky.market.place.exceptions.ValidationException;
 import com.epam.yevheniy.chornenky.market.place.repositories.UserRepository;
 import com.epam.yevheniy.chornenky.market.place.repositories.entities.UserEntity;
-import com.epam.yevheniy.chornenky.market.place.exceptions.AuthenticationException;
 import com.epam.yevheniy.chornenky.market.place.servlet.dto.UserRegistrationDTO;
 
 import java.util.Map;
@@ -18,7 +18,7 @@ public class UserService {
     }
 
     public Authentication authenticate(String email, String psw) {
-        UserEntity user = repository.getUser(email);
+        UserEntity user = repository.findByEmail(email).orElseThrow(AuthenticationException::new);
         if (!user.getPsw().equals(psw)) {
             throw new AuthenticationException();
         }
@@ -31,7 +31,7 @@ public class UserService {
         }
         String id = UUID.randomUUID().toString();
         UserEntity user = new UserEntity(userRegistrationDTO.getName(), userRegistrationDTO.getSurName(),
-                userRegistrationDTO.getPsw(), userRegistrationDTO.getEmail(), id, "standardUser");
+                userRegistrationDTO.getPsw(), userRegistrationDTO.getEmail(), id, UserEntity.Role.STANDARD);
         repository.createUser(user);
     }
 
@@ -44,10 +44,10 @@ public class UserService {
         private final String name;
         private final String surName;
         private final String email;
-        private final String role;
+        private final UserEntity.Role role;
         private final String userId;
 
-        private Authentication(String name, String surName, String email, String role, String userId) {
+        private Authentication(String name, String surName, String email, UserEntity.Role role, String userId) {
             this.name = name;
             this.surName = surName;
             this.email = email;
@@ -67,9 +67,7 @@ public class UserService {
             return email;
         }
 
-        public String getRole() {
-            return role;
-        }
+        public UserEntity.Role getRole() {return role;}
 
         public String getUserId() {
             return userId;
